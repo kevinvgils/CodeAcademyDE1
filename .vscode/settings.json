@@ -1,0 +1,15 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "src/lib/javafx.base.jar",
+        "src/lib/javafx.controls.jar",
+        "src/lib/javafx.fxml.jar",
+        "src/lib/javafx.graphics.jar",
+        "src/lib/javafx.media.jar",
+        "src/lib/javafx.swing.jar",
+        "src/lib/javafx.web.jar",
+        "src/lib/javafx-swt.jar",
+        "src/lib/junit-platform-console-standalone-1.8.2.jar",
+        "src/lib/mssql-jdbc-9.4.1.jre11.jar"
+    ]
+}
