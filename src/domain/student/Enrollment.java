@@ -1,5 +1,5 @@
 package domain.student;
 
-public class Enrollment{
-    
+public class Enrollment {
+
 }
