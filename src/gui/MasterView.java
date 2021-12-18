@@ -59,19 +59,25 @@ public class MasterView extends Application {
         mainWrap.setCenter(alltypes());
 
         //Footer
+        Button refreshList = new Button("Refresh list");
         Button addButton = new Button("Add");
         Button viewButton = new Button("View");
         Button removeButton = new Button("Remove");
-        HBox buttons = new HBox(addButton, viewButton, removeButton);
+        HBox buttons = new HBox(refreshList, addButton, viewButton, removeButton);
 
         //TODO: master doesnt update yet.
+        refreshList.setOnAction(event ->{
+            mainWrap.setCenter(alltypes());
+        });
         addButton.setOnAction(event ->{
             new AddView(type, true, null);
+            mainWrap.setCenter(alltypes());
         });
         viewButton.setOnAction(event ->{
             try {
                 RadioButton selected = (RadioButton) items.getSelectedToggle();
                 new DetailView(type, selected.getText());
+                mainWrap.setCenter(alltypes());
             } catch (Exception e) {
                 
             }
@@ -87,6 +93,7 @@ public class MasterView extends Application {
                 } else{
 
                 }
+                mainWrap.setCenter(alltypes());
             } catch (Exception e) {
 
             }

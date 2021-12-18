@@ -1,8 +1,11 @@
 package gui;
 
+import java.sql.Date;
+
 import domain.student.Student;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -45,7 +48,10 @@ public class AddView {
         name.setPromptText("Full name");
         DatePicker dateOfBirth = new DatePicker();
         dateOfBirth.setPromptText("Date of birth");
-        //TODO: Gender field
+
+        ChoiceBox gender = new ChoiceBox();
+        gender.getItems().addAll("Male", "Female", "Other");
+
         TextField zipCode = new TextField();
         zipCode.setPromptText("Zipcode");
         TextField houseNumber = new TextField();
@@ -60,8 +66,8 @@ public class AddView {
         //add student
         if(addNew){
             submitStudent.setOnAction(event ->{
-                java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis()); //TODO: Date needs to be get from textfield
-                studentController.addStudent(email.getText(), name.getText(), sqlDate, 0, zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText());
+                Date sqlDate = Date.valueOf(dateOfBirth.getValue());
+                studentController.addStudent(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText());
                 createStage.close();
             });
 
@@ -70,19 +76,21 @@ public class AddView {
             Student selectedStudent = studentController.getStudent(key);
             email.setText(selectedStudent.getEmail());
             name.setText(selectedStudent.getName());
-            //Genders
+            dateOfBirth.setValue(selectedStudent.getDateOfBirth().toLocalDate());
+            gender.setValue(selectedStudent.getGender());
             zipCode.setText(selectedStudent.getZipCode());
             houseNumber.setText(selectedStudent.getHouseNumber().toString());
             street.setText(selectedStudent.getStreet());
             country.setText(selectedStudent.getCountry());
-            submitStudent.setText("Update student");;
+            submitStudent.setText("Update student");
+            
             submitStudent.setOnAction(event ->{ 
-                java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis()); //TODO: Date needs to be get from textfield
-                Student updatedStudent = new Student(email.getText(), name.getText(), sqlDate, 0, zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText());
+                Date sqlDate = Date.valueOf(dateOfBirth.getValue());
+                Student updatedStudent = new Student(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText());
                 studentController.updateStudent(updatedStudent, selectedStudent.getEmail());
                 createStage.close();
             });
         }
-        return new VBox(email, name, dateOfBirth, zipCode, houseNumber, street, country, submitStudent);
+        return new VBox(email, name, dateOfBirth, gender, zipCode, houseNumber, street, country, submitStudent);
     }
 }

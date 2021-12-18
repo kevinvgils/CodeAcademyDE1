@@ -76,7 +76,20 @@ public class DetailView {
             Label email = new Label("Email: "+ selectedStudent.getEmail());
             Label dateOfBirth = new Label("Date of birth: "+
             selectedStudent.getDateOfBirth());
-            Label gender = new Label("Gender: "+selectedStudent.getGender());
+
+            Label gender = new Label();
+            switch(selectedStudent.getGender()) {
+                case 0: 
+                    gender.setText("Gender: Male");
+                    break;
+                case 1: 
+                    gender.setText("Gender: Female");
+                    break;
+                case 2: 
+                    gender.setText("Gender: Other");
+                    break;
+
+            }
             Label adress = new Label("Adress: "+ selectedStudent.getZipCode()+" "+selectedStudent.getStreet()+" "+selectedStudent.getHouseNumber());
             Label country = new Label("Country: "+ selectedStudent.getCountry());
 
