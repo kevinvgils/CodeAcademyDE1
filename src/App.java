@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import domain.student.Student;
+import logic.*;
+
 import javafx.application.Application;
-import logic.studentController;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        studentController studentController = new studentController();
+        StudentController studentController = new StudentController();
 
         Student testStudent = studentController.getStudent("test@gmail.com");
 

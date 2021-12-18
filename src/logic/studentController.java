@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import domain.student.Student;
 
-public class studentController {
+public class StudentController {
 
     public Connection getConnection() {
         String dbConnection = "jdbc:sqlserver://aei-sql2.avans.nl:1443;databaseName=CodeCademyIpsum";
@@ -75,8 +75,8 @@ public class studentController {
         }
     }
 
-    public void addStudent(String email, String name, Date dateOfBirth, Integer gender, String zipCode,
-            Integer houseNumber, String street, String country) {
+    public void addStudent(String email, String name, Date dateOfBirth, int gender, String zipCode,
+            int houseNumber, String street, String country) {
         Connection connection = getConnection();
         String query = "INSERT INTO student VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
