@@ -6,27 +6,25 @@ import domain.student.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import logic.StudentController;
 
 public class MasterView extends Application {
+    private StudentController studentController = new StudentController();
     private int type = 0;
     private ToggleGroup items = new ToggleGroup();
 
     public VBox alltypes() {
 
         if(type == 0) {
-            //TODO: get all students from database
-            return setStudent(new ArrayList<Student>());
+            return setStudent(studentController.getAllStudents());
         } else if(type == 1){
             return new VBox(); //WIP
         } else{
@@ -39,7 +37,7 @@ public class MasterView extends Application {
     public VBox setStudent(ArrayList<Student> students){
         VBox allStudents = new VBox();
         for(Student student : students){
-            RadioButton tempButton = new RadioButton(/*student.getName() +*/" - "/* + student.getEmail()*/); //TODO: make getters and setters
+            RadioButton tempButton = new RadioButton(student.getName() +" - " + student.getEmail());
             tempButton.setToggleGroup(items);
             allStudents.getChildren().add(tempButton);
         }
@@ -58,31 +56,50 @@ public class MasterView extends Application {
         mainWrap.setTop(header);
 
         //Main
-        mainWrap.setCenter(setStudent(new ArrayList<Student>())); //TODO: VERVANG ARRAYLIST MET CONTROLER METHOD
+        mainWrap.setCenter(alltypes());
 
         //Footer
+        Button refreshList = new Button("Refresh list");
         Button addButton = new Button("Add");
         Button viewButton = new Button("View");
         Button removeButton = new Button("Remove");
-        HBox buttons = new HBox(addButton, viewButton, removeButton);
+        HBox buttons = new HBox(refreshList, addButton, viewButton, removeButton);
 
+        //TODO: master doesnt update yet.
+        refreshList.setOnAction(event ->{
+            mainWrap.setCenter(alltypes());
+        });
         addButton.setOnAction(event ->{
-            AddView addItem = new AddView();
-            addItem.createItem(type);
+            new AddView(type, true, null);
+            mainWrap.setCenter(alltypes());
         });
         viewButton.setOnAction(event ->{
             try {
                 RadioButton selected = (RadioButton) items.getSelectedToggle();
-                DetailView viewItem = new DetailView(type, selected.getText());
+                new DetailView(type, selected.getText());
+                mainWrap.setCenter(alltypes());
             } catch (Exception e) {
-                DetailView viewItem = new DetailView(type, null);
+                
             }
-            
         });
         removeButton.setOnAction(event ->{
+            RadioButton selected = (RadioButton) items.getSelectedToggle();
+            try {
+                if (type == 0) {
+                    studentController.deleteStudent(selected.getText().split(" - ")[1]);
+                    mainWrap.setCenter(setStudent(studentController.getAllStudents()));
+                } else if (type == 1) {
+                    
+                } else{
+
+                }
+                mainWrap.setCenter(alltypes());
+            } catch (Exception e) {
+
+            }
             
-            mainWrap.setCenter(setStudent(new ArrayList<Student>()));
-        }); //TODO: VOEG DE DELETE CONTROLLER TOE
+            mainWrap.setCenter(setStudent(studentController.getAllStudents()));
+        });
 
         mainWrap.setBottom(buttons);
 

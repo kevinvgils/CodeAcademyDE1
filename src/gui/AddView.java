@@ -1,24 +1,32 @@
 package gui;
 
+import java.sql.Date;
+
+import domain.student.Student;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import logic.StudentController;
 
 public class AddView {
     
-    public void createItem(int type){
-        Stage createStage = new Stage();
+    private StudentController studentController;
+    private Stage createStage = new Stage();
+
+    public AddView(int type, boolean addNew, String key) {
+        studentController = new StudentController();
         BorderPane body = new BorderPane();
         Label title = new Label();
 
         if(type == 0){
             title.setText("Add student");
-            body.setCenter(addStudent());
+            body.setCenter(addStudent(addNew, key));
         } else if(type == 1){
             //WIP
         } else if(type == 2){
@@ -33,16 +41,56 @@ public class AddView {
     }
 
     //Makes the addStudent form
-    public VBox addStudent(){
+    public VBox addStudent(boolean addNew, String key){
+        TextField email = new TextField();
+        email.setPromptText("Email address");
         TextField name = new TextField();
+        name.setPromptText("Full name");
         DatePicker dateOfBirth = new DatePicker();
-        //Genders
+        dateOfBirth.setPromptText("Date of birth");
+
+        ChoiceBox gender = new ChoiceBox();
+        gender.getItems().addAll("Male", "Female", "Other");
+
         TextField zipCode = new TextField();
+        zipCode.setPromptText("Zipcode");
         TextField houseNumber = new TextField();
+        houseNumber.setPromptText("house number");
         TextField street = new TextField();
+        street.setPromptText("street of residence");
         TextField country = new TextField();
+        country.setPromptText("country of residence");
+
         Button submitStudent = new Button("Add student");
 
-        return new VBox(name, dateOfBirth, zipCode, houseNumber, street, country, submitStudent);
+        //add student
+        if(addNew){
+            submitStudent.setOnAction(event ->{
+                Date sqlDate = Date.valueOf(dateOfBirth.getValue());
+                studentController.addStudent(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText());
+                createStage.close();
+            });
+
+        //Update student
+        } else{
+            Student selectedStudent = studentController.getStudent(key);
+            email.setText(selectedStudent.getEmail());
+            name.setText(selectedStudent.getName());
+            dateOfBirth.setValue(selectedStudent.getDateOfBirth().toLocalDate());
+            gender.setValue(selectedStudent.getGender());
+            zipCode.setText(selectedStudent.getZipCode());
+            houseNumber.setText(selectedStudent.getHouseNumber().toString());
+            street.setText(selectedStudent.getStreet());
+            country.setText(selectedStudent.getCountry());
+            submitStudent.setText("Update student");
+            
+            submitStudent.setOnAction(event ->{ 
+                Date sqlDate = Date.valueOf(dateOfBirth.getValue());
+                Student updatedStudent = new Student(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText());
+                studentController.updateStudent(updatedStudent, selectedStudent.getEmail());
+                createStage.close();
+            });
+        }
+        return new VBox(email, name, dateOfBirth, gender, zipCode, houseNumber, street, country, submitStudent);
     }
 }
