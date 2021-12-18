@@ -8,19 +8,21 @@ public class Student {
     private String name;
     private Date dateOfBirth;
     private Integer gender;
-    private String address;
-    private String city;
+    private String zipCode;
+    private Integer houseNumber;
+    private String street;
     private String country;
     private ArrayList<Enrollment> enrollments;
 
-    public Student(String email, String name, Date dateOfBirth, Integer gender, String address, String city,
-            String country) {
+    public Student(String email, String name, Date dateOfBirth, Integer gender, String zipCode, Integer houseNumber,
+            String street, String country) {
         this.email = email;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.address = address;
-        this.city = city;
+        this.zipCode = zipCode;
+        this.houseNumber = houseNumber;
+        this.street = street;
         this.country = country;
     }
 
@@ -56,27 +58,35 @@ public class Student {
         this.gender = gender;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getCountry() {
         return country;
     }
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setHouseNumber(Integer houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public Integer getHouseNumber() {
+        return houseNumber;
     }
 }
