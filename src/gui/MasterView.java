@@ -2,7 +2,8 @@ package gui;
 
 import java.util.ArrayList;
 import domain.student.*;
-
+import gui.addviews.AddView;
+import gui.detailviews.DetailView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
