@@ -39,7 +39,8 @@ public class StudentController {
             while (resultSet.next()) {
                 Student student = new Student(resultSet.getString("email"), resultSet.getString("name"),
                         resultSet.getDate("dateOfBirth"), resultSet.getInt("gender"), resultSet.getString("zipCode"),
-                        resultSet.getInt("houseNumber"), resultSet.getString("street"), resultSet.getString("country"), resultSet.getString("location"));
+                        resultSet.getInt("houseNumber"), resultSet.getString("street"), resultSet.getString("country"),
+                        resultSet.getString("location"));
                 students.add(student);
             }
             connection.close();
@@ -64,7 +65,8 @@ public class StudentController {
             while (resultSet.next()) {
                 Student student = new Student(resultSet.getString("email"), resultSet.getString("name"),
                         resultSet.getDate("dateOfBirth"), resultSet.getInt("gender"), resultSet.getString("zipCode"),
-                        resultSet.getInt("houseNumber"), resultSet.getString("street"), resultSet.getString("country"), resultSet.getString("location"));
+                        resultSet.getInt("houseNumber"), resultSet.getString("street"), resultSet.getString("country"),
+                        resultSet.getString("location"));
                 students.add(student);
             }
             connection.close();
