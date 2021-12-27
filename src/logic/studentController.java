@@ -39,7 +39,7 @@ public class StudentController {
             while (resultSet.next()) {
                 Student student = new Student(resultSet.getString("email"), resultSet.getString("name"),
                         resultSet.getDate("dateOfBirth"), resultSet.getInt("gender"), resultSet.getString("zipCode"),
-                        resultSet.getInt("houseNumber"), resultSet.getString("street"), resultSet.getString("country"));
+                        resultSet.getInt("houseNumber"), resultSet.getString("street"), resultSet.getString("country"), resultSet.getString("location"));
                 students.add(student);
             }
             connection.close();
@@ -64,7 +64,7 @@ public class StudentController {
             while (resultSet.next()) {
                 Student student = new Student(resultSet.getString("email"), resultSet.getString("name"),
                         resultSet.getDate("dateOfBirth"), resultSet.getInt("gender"), resultSet.getString("zipCode"),
-                        resultSet.getInt("houseNumber"), resultSet.getString("street"), resultSet.getString("country"));
+                        resultSet.getInt("houseNumber"), resultSet.getString("street"), resultSet.getString("country"), resultSet.getString("location"));
                 students.add(student);
             }
             connection.close();
@@ -76,9 +76,9 @@ public class StudentController {
     }
 
     public void addStudent(String email, String name, Date dateOfBirth, int gender, String zipCode,
-            int houseNumber, String street, String country) {
+            int houseNumber, String street, String country, String location) {
         Connection connection = getConnection();
-        String query = "INSERT INTO student VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO student VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(query);
@@ -90,6 +90,7 @@ public class StudentController {
             preparedStmt.setInt(6, houseNumber);
             preparedStmt.setString(7, street);
             preparedStmt.setString(8, country);
+            preparedStmt.setString(9, location);
             preparedStmt.execute();
             connection.close();
         } catch (Exception e) {
@@ -113,7 +114,7 @@ public class StudentController {
 
     public void updateStudent(Student student, String oldEmail) {
         Connection connection = getConnection();
-        String query = "UPDATE student SET email = ?, name = ?, dateOfBirth = ?, gender = ?, zipCode = ?, houseNumber = ?, street = ?, country = ? WHERE email = ?";
+        String query = "UPDATE student SET email = ?, name = ?, dateOfBirth = ?, gender = ?, zipCode = ?, houseNumber = ?, street = ?, country = ?, location = ?, WHERE email = ?";
 
         try {
             java.util.Date utilDate = student.getDateOfBirth();
@@ -127,7 +128,8 @@ public class StudentController {
             preparedStmt.setInt(6, student.getHouseNumber());
             preparedStmt.setString(7, student.getStreet());
             preparedStmt.setString(8, student.getCountry());
-            preparedStmt.setString(9, oldEmail);
+            preparedStmt.setString(9, student.getLocation());
+            preparedStmt.setString(10, oldEmail);
             preparedStmt.execute();
             connection.close();
         } catch (Exception e) {

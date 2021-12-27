@@ -1,6 +1,8 @@
-package gui;
+package gui.detailviews;
 
 import domain.student.Student;
+import gui.addviews.StudentAddView;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,12 +12,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.StudentController;
 
-public class DetailView {
+public class StudentDetailView {
 
     private StudentController studentController = new StudentController();
     private Student selectedStudent;
 
-    public DetailView(int type, String itemString) {
+    public StudentDetailView(int type, String itemString) {
         Stage viewStage = new Stage();
         BorderPane body = new BorderPane();
 
@@ -24,15 +26,9 @@ public class DetailView {
         body.setTop(title);
 
         //main
-        if (type == 0) {
-            title.setText("Student");
-            body.setCenter(viewStudent(itemString));
-        } else if (type == 1) {
-            // WIP
-        } else if (type == 2) {
-            // WIP
-        }
-
+        title.setText("Student");
+        body.setCenter(viewStudent(itemString));
+ 
         //Footer
         Button deleteButton = new Button("Delete");
         Button editButton = new Button("Update");
@@ -62,7 +58,7 @@ public class DetailView {
 
     public void updateItem(){
         if(selectedStudent != null){
-            new AddView(0, false, selectedStudent.getEmail());
+            new StudentAddView(0, false, selectedStudent.getEmail());
         }
     }
 
@@ -91,9 +87,10 @@ public class DetailView {
 
             }
             Label adress = new Label("Adress: "+ selectedStudent.getZipCode()+" "+selectedStudent.getStreet()+" "+selectedStudent.getHouseNumber());
+            Label location = new Label("Location: "+ selectedStudent.getLocation());
             Label country = new Label("Country: "+ selectedStudent.getCountry());
 
-            return new VBox(name, email, dateOfBirth, gender, adress, country);
+            return new VBox(name, email, dateOfBirth, gender, adress, location, country);
 
         } catch (Exception e) {
             return new VBox();

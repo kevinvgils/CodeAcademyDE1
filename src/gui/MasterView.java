@@ -2,7 +2,8 @@ package gui;
 
 import java.util.ArrayList;
 import domain.student.*;
-
+import gui.addviews.StudentAddView;
+import gui.detailviews.StudentDetailView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,7 +32,6 @@ public class MasterView extends Application {
             return new VBox(); //WIP
         }
     }
-
 
     //Gets all students from controller and puts them in a list
     public VBox setStudent(ArrayList<Student> students){
@@ -65,18 +65,17 @@ public class MasterView extends Application {
         Button removeButton = new Button("Remove");
         HBox buttons = new HBox(refreshList, addButton, viewButton, removeButton);
 
-        //TODO: master doesnt update yet.
         refreshList.setOnAction(event ->{
             mainWrap.setCenter(alltypes());
         });
         addButton.setOnAction(event ->{
-            new AddView(type, true, null);
+            new StudentAddView(type, true, null);
             mainWrap.setCenter(alltypes());
         });
         viewButton.setOnAction(event ->{
             try {
                 RadioButton selected = (RadioButton) items.getSelectedToggle();
-                new DetailView(type, selected.getText());
+                new StudentDetailView(type, selected.getText());
                 mainWrap.setCenter(alltypes());
             } catch (Exception e) {
                 
