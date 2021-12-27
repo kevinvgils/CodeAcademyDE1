@@ -12,10 +12,11 @@ public class Student {
     private Integer houseNumber;
     private String street;
     private String country;
+    private String location;
     private ArrayList<Enrollment> enrollments;
 
     public Student(String email, String name, Date dateOfBirth, Integer gender, String zipCode, Integer houseNumber,
-            String street, String country) {
+            String street, String country, String location) {
         this.email = email;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -24,6 +25,15 @@ public class Student {
         this.houseNumber = houseNumber;
         this.street = street;
         this.country = country;
+        this.location = location;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getEmail() {
