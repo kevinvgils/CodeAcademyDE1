@@ -114,7 +114,7 @@ public class StudentController {
 
     public void updateStudent(Student student, String oldEmail) {
         Connection connection = getConnection();
-        String query = "UPDATE student SET email = ?, name = ?, dateOfBirth = ?, gender = ?, zipCode = ?, houseNumber = ?, street = ?, country = ?, location = ?, WHERE email = ?";
+        String query = "UPDATE student SET email = ?, name = ?, dateOfBirth = ?, gender = ?, zipCode = ?, houseNumber = ?, street = ?, country = ?, location = ? WHERE email = ?";
 
         try {
             java.util.Date utilDate = student.getDateOfBirth();
