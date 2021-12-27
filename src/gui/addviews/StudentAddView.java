@@ -77,6 +77,7 @@ public class StudentAddView {
             zipCode.setText(selectedStudent.getZipCode());
             houseNumber.setText(selectedStudent.getHouseNumber().toString());
             street.setText(selectedStudent.getStreet());
+            location.setText(selectedStudent.getLocation());
             country.setText(selectedStudent.getCountry());
             submitStudent.setText("Update student");
             
@@ -87,6 +88,6 @@ public class StudentAddView {
                 createStage.close();
             });
         }
-        return new VBox(email, name, dateOfBirth, gender, zipCode, houseNumber, street, country, submitStudent);
+        return new VBox(email, name, dateOfBirth, gender, zipCode, houseNumber, street, location, country, submitStudent);
     }
 }
