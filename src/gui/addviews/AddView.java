@@ -1,4 +1,4 @@
-package gui;
+package gui.addviews;
 
 import java.sql.Date;
 
@@ -58,6 +58,8 @@ public class AddView {
         houseNumber.setPromptText("house number");
         TextField street = new TextField();
         street.setPromptText("street of residence");
+        TextField location = new TextField();
+        location.setPromptText("location of residence");
         TextField country = new TextField();
         country.setPromptText("country of residence");
 
@@ -67,7 +69,7 @@ public class AddView {
         if(addNew){
             submitStudent.setOnAction(event ->{
                 Date sqlDate = Date.valueOf(dateOfBirth.getValue());
-                studentController.addStudent(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText());
+                studentController.addStudent(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(), location.getText());
                 createStage.close();
             });
 
@@ -86,7 +88,7 @@ public class AddView {
             
             submitStudent.setOnAction(event ->{ 
                 Date sqlDate = Date.valueOf(dateOfBirth.getValue());
-                Student updatedStudent = new Student(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText());
+                Student updatedStudent = new Student(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(), location.getText());
                 studentController.updateStudent(updatedStudent, selectedStudent.getEmail());
                 createStage.close();
             });
