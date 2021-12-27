@@ -1,7 +1,7 @@
 package gui.detailviews;
 
 import domain.student.Student;
-import gui.addviews.AddView;
+import gui.addviews.StudentAddView;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,12 +12,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.StudentController;
 
-public class DetailView {
+public class StudentDetailView {
 
     private StudentController studentController = new StudentController();
     private Student selectedStudent;
 
-    public DetailView(int type, String itemString) {
+    public StudentDetailView(int type, String itemString) {
         Stage viewStage = new Stage();
         BorderPane body = new BorderPane();
 
@@ -58,7 +58,7 @@ public class DetailView {
 
     public void updateItem(){
         if(selectedStudent != null){
-            new AddView(0, false, selectedStudent.getEmail());
+            new StudentAddView(0, false, selectedStudent.getEmail());
         }
     }
 

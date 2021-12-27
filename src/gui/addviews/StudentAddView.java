@@ -14,24 +14,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.StudentController;
 
-public class AddView {
+public class StudentAddView {
     
     private StudentController studentController;
     private Stage createStage = new Stage();
 
-    public AddView(int type, boolean addNew, String key) {
+    public StudentAddView(int type, boolean addNew, String key) {
         studentController = new StudentController();
         BorderPane body = new BorderPane();
         Label title = new Label();
 
-        if(type == 0){
-            title.setText("Add student");
-            body.setCenter(addStudent(addNew, key));
-        } else if(type == 1){
-            //WIP
-        } else if(type == 2){
-            //WIP   
-        }
+        title.setText("Add student");
+        body.setCenter(addStudent(addNew, key));
 
         body.setTop(title);
 
