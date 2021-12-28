@@ -1,21 +1,13 @@
-import domain.student.Student;
-import logic.*;
-
 import javafx.application.Application;
+import logic.CertificateController;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        StudentController studentController = new StudentController();
 
-        Student testStudent = studentController.getStudent("test@gmail.com");
+        CertificateController certificate = new CertificateController();
 
-        System.out.println(testStudent.getName());
-        System.out.println("-------------------");
-        testStudent.setName("Kevinetje van Gils");
-
-        studentController.updateStudent(testStudent, "test@gmail.com");
+        certificate.addCertificate(3, "Thijs Poepei");
 
         Application.launch(gui.MasterView.class);
-
     }
 }
