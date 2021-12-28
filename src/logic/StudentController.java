@@ -3,7 +3,6 @@ package logic;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -12,22 +11,11 @@ import domain.student.Student;
 
 public class StudentController {
 
-    public Connection getConnection() {
-        String dbConnection = "jdbc:sqlserver://aei-sql2.avans.nl:1443;databaseName=CodeCademyIpsum";
-        String user = "ipsum";
-        String password = "LoremIpsum01";
-        try {
-            Connection connection = DriverManager.getConnection(dbConnection, user, password);
-            return connection;
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
+    private DatabaseConnection DBconnection = new DatabaseConnection();
 
     public ArrayList<Student> getAllStudents() {
         ArrayList<Student> students = new ArrayList<>();
-        Connection connection = getConnection();
+        Connection connection = DBconnection.getConnection();
         String query = "SELECT * FROM student";
         Statement statement;
         ResultSet resultSet;
@@ -53,7 +41,7 @@ public class StudentController {
 
     public Student getStudent(String email) {
         ArrayList<Student> students = new ArrayList<>();
-        Connection connection = getConnection();
+        Connection connection = DBconnection.getConnection();
         String query = "SELECT * FROM student WHERE email = ?";
         ResultSet resultSet;
 
@@ -79,7 +67,7 @@ public class StudentController {
 
     public void addStudent(String email, String name, Date dateOfBirth, int gender, String zipCode,
             int houseNumber, String street, String country, String location) {
-        Connection connection = getConnection();
+        Connection connection = DBconnection.getConnection();
         String query = "INSERT INTO student VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -101,7 +89,7 @@ public class StudentController {
     }
 
     public void deleteStudent(String email) {
-        Connection connection = getConnection();
+        Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM student WHERE email = ?";
 
         try {
@@ -115,7 +103,7 @@ public class StudentController {
     }
 
     public void updateStudent(Student student, String oldEmail) {
-        Connection connection = getConnection();
+        Connection connection = DBconnection.getConnection();
         String query = "UPDATE student SET email = ?, name = ?, dateOfBirth = ?, gender = ?, zipCode = ?, houseNumber = ?, street = ?, country = ?, location = ? WHERE email = ?";
 
         try {
