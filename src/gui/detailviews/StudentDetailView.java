@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import domain.student.Enrollment;
 import domain.student.Student;
+import gui.addviews.CertificateAddView;
 import gui.addviews.EnrollmentAddView;
 import gui.addviews.StudentAddView;
 
@@ -45,7 +46,7 @@ public class StudentDetailView {
         HBox buttons = new HBox(refreshList, addButton, deleteButton, editButton);
         body.setBottom(buttons);
 
-        // events 
+        // events
         refreshList.setOnAction(event -> {
             body.setCenter(viewStudent(itemString));
         });
@@ -65,7 +66,7 @@ public class StudentDetailView {
         viewStage.setScene(scene);
         viewStage.show();
     }
- 
+
     public void addEnrollment() {
         new EnrollmentAddView(selectedStudent, true, 0);
     }
@@ -126,15 +127,17 @@ public class StudentDetailView {
         for (Enrollment enrollment : enrollments) {
             Button update = new Button("update");
             Button delete = new Button("delete");
+            Button certificate = new Button("certificate");
 
             String certificateStatus = "";
-            if(enrollment.getCertificate_id() != 0){
+            if (enrollment.getCertificate_id() != 0) {
                 certificateStatus = " ✓ ";
-            } else{
+            } else {
                 certificateStatus = " X ";
             }
 
-            Label enrollmentLabel = new Label(certificateStatus + enrollment.getCourseName() + " - " + enrollment.getDateOfEnrollment());
+            Label enrollmentLabel = new Label(
+                    certificateStatus + enrollment.getCourseName() + " - " + enrollment.getDateOfEnrollment());
 
             update.setOnAction(event -> {
                 new EnrollmentAddView(selectedStudent, false, enrollment.getEnrollment_id());
@@ -144,7 +147,15 @@ public class StudentDetailView {
                 body.setCenter(viewStudent(itemString));
             });
 
-            HBox enrollmentWrap = new HBox(update, delete, enrollmentLabel);
+            certificate.setOnAction(event -> {
+                new CertificateAddView(enrollment.getEnrollment_id());
+            });
+            HBox enrollmentWrap = new HBox();
+            if (enrollment.getCertificate_id() != 0) {
+                enrollmentWrap = new HBox(update, delete, enrollmentLabel);
+            } else {
+                enrollmentWrap = new HBox(update, delete, certificate, enrollmentLabel);
+            }
             allEnrollmentsForStude.getChildren().add(enrollmentWrap);
         }
         return allEnrollmentsForStude;

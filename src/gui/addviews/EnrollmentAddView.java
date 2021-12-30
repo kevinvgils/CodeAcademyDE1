@@ -11,13 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.CourseController;
 import logic.EnrollmentController;
-import logic.StudentController;
 
 public class EnrollmentAddView {
     private EnrollmentController enrollmentController;
@@ -44,13 +42,13 @@ public class EnrollmentAddView {
         createStage.show();
     }
 
-    //Makes the addStudent form
-    public VBox addEnrollment(boolean addNew, int key){
+    // Makes the addStudent form
+    public VBox addEnrollment(boolean addNew, int key) {
 
         ChoiceBox courses = new ChoiceBox();
         ArrayList<Course> courseArray = courseController.getAllCourses();
 
-        for(Course course : courseArray){
+        for (Course course : courseArray) {
             courses.getItems().add(course.getCourseName());
         }
 
@@ -59,26 +57,29 @@ public class EnrollmentAddView {
 
         Button submitEnrollment = new Button("Add enrollment");
 
-        //add enrollment
-        if(addNew){
-            submitEnrollment.setOnAction(event ->{
+        // add enrollment
+        if (addNew) {
+            submitEnrollment.setOnAction(event -> {
                 Date sqlDate = Date.valueOf(dateOfEnrollment.getValue());
-                enrollmentController.addEnrollment(selectedStudent.getEmail(), courses.getSelectionModel().getSelectedItem().toString(), sqlDate);
+                enrollmentController.addEnrollment(selectedStudent.getEmail(),
+                        courses.getSelectionModel().getSelectedItem().toString(), sqlDate);
                 createStage.close();
             });
 
-        //Update enrollment
-        } else{
+            // Update enrollment
+        } else {
             Enrollment selectedEnrollment = enrollmentController.getEnrollment(key);
 
             dateOfEnrollment.setValue(selectedEnrollment.getDateOfEnrollment().toLocalDate());
             courses.setValue(selectedEnrollment.getCourseName());
 
             submitEnrollment.setText("Update enrollment");
-            
-            submitEnrollment.setOnAction(event ->{ 
+
+            submitEnrollment.setOnAction(event -> {
                 Date sqlDate = Date.valueOf(dateOfEnrollment.getValue());
-                Enrollment updatedEnrollment = new Enrollment(selectedEnrollment.getEnrollment_id(), selectedEnrollment.getEmail(), selectedEnrollment.getCertificate_id(), courses.getSelectionModel().getSelectedItem().toString(), sqlDate);
+                Enrollment updatedEnrollment = new Enrollment(selectedEnrollment.getEnrollment_id(),
+                        selectedEnrollment.getEmail(), selectedEnrollment.getCertificate_id(),
+                        courses.getSelectionModel().getSelectedItem().toString(), sqlDate);
                 enrollmentController.updateEnrollment(updatedEnrollment, selectedEnrollment.getEnrollment_id());
                 createStage.close();
             });
