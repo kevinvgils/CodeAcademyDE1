@@ -9,8 +9,10 @@ import gui.addviews.EnrollmentAddView;
 import gui.addviews.StudentAddView;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -92,9 +94,7 @@ public class StudentDetailView {
 
             Label name = new Label("Name: " + selectedStudent.getName());
             Label email = new Label("Email: " + selectedStudent.getEmail());
-            Label dateOfBirth = new Label("Date of birth: " +
-                    selectedStudent.getDateOfBirth());
-
+            Label dateOfBirth = new Label("Date of birth: " + selectedStudent.getDateOfBirth());
             Label gender = new Label();
             switch (selectedStudent.getGender()) {
                 case 0:
@@ -108,8 +108,7 @@ public class StudentDetailView {
                     break;
 
             }
-            Label adress = new Label("Adress: " + selectedStudent.getZipCode() + " " + selectedStudent.getStreet() + " "
-                    + selectedStudent.getHouseNumber());
+            Label adress = new Label("Adress: " + selectedStudent.getZipCode() + " " + selectedStudent.getStreet() + " " + selectedStudent.getHouseNumber());
             Label location = new Label("Location: " + selectedStudent.getLocation());
             Label country = new Label("Country: " + selectedStudent.getCountry());
 
@@ -122,9 +121,15 @@ public class StudentDetailView {
 
     }
 
-    public VBox getEnrollments(ArrayList<Enrollment> enrollments) {
-        VBox allEnrollmentsForStude = new VBox();
+    public Accordion getEnrollments(ArrayList<Enrollment> enrollments) {
+
+        Accordion allEnrollmentsForStudent = new Accordion();
+
         for (Enrollment enrollment : enrollments) {
+
+            TitledPane enrollmentWrap = new TitledPane();
+            VBox innerWrap = new VBox();
+
             Button update = new Button("update");
             Button delete = new Button("delete");
             Button certificate = new Button("certificate");
@@ -136,9 +141,6 @@ public class StudentDetailView {
                 certificateStatus = " X ";
             }
 
-            Label enrollmentLabel = new Label(
-                    certificateStatus + enrollment.getCourseName() + " - " + enrollment.getDateOfEnrollment());
-
             update.setOnAction(event -> {
                 new EnrollmentAddView(selectedStudent, false, enrollment.getEnrollment_id());
             });
@@ -146,18 +148,35 @@ public class StudentDetailView {
                 enrollmentController.deleteEnrollment(enrollment.getEnrollment_id());
                 body.setCenter(viewStudent(itemString));
             });
-
             certificate.setOnAction(event -> {
                 new CertificateAddView(enrollment.getEnrollment_id());
             });
-            HBox enrollmentWrap = new HBox();
+
+            HBox buttonWrap = new HBox();
             if (enrollment.getCertificate_id() != 0) {
-                enrollmentWrap = new HBox(update, delete, enrollmentLabel);
+                buttonWrap = new HBox(update, delete);
             } else {
-                enrollmentWrap = new HBox(update, delete, certificate, enrollmentLabel);
+                buttonWrap = new HBox(update, delete, certificate);
             }
-            allEnrollmentsForStude.getChildren().add(enrollmentWrap);
+
+            innerWrap.getChildren().add(buttonWrap);
+            innerWrap.getChildren().add(getContentItems(enrollment.getEmail(), enrollment.getCourseName()));
+
+            String enrollmentLabel = certificateStatus + enrollment.getCourseName() + " - " + enrollment.getDateOfEnrollment();
+            allEnrollmentsForStudent.getPanes().add(new TitledPane(enrollmentLabel, innerWrap));
         }
-        return allEnrollmentsForStude;
+        return allEnrollmentsForStudent;
+    }
+
+    public VBox getContentItems(String email, String courseName){
+
+        VBox content = new VBox();
+        ArrayList<String[]> modules = studentController.getModules(email, courseName);
+
+        for(String[] module : modules){
+            content.getChildren().add(new Label(module[1] + "% - " + module[0]));
+        }
+
+        return content;
     }
 }
