@@ -16,10 +16,10 @@ public class CourseDetailView {
 
     private CourseController courseController = new CourseController();
     private Course selectedCourse;
+    private BorderPane body = new BorderPane();
 
     public CourseDetailView(int type, String itemString) {
         Stage viewStage = new Stage();
-        BorderPane body = new BorderPane();
 
         //header
         Label title = new Label();
@@ -72,10 +72,27 @@ public class CourseDetailView {
             Label subject = new Label("Subject: "+ selectedCourse.getSubject());
             Label introductionText = new Label("Introduction text: "+ selectedCourse.getIntroductionText());
 
-            return new VBox(level, subject, introductionText);
+            return new VBox(level, subject, introductionText, recommendedCoure(itemString));
 
         } catch (Exception e) {
             return new VBox();
         }
+    }
+
+    public VBox recommendedCoure(String itemString){
+        String[] parts = itemString.split(" - ");
+        ArrayList<Course> recommended = courseController.getRecommendedCourses(parts[0]);
+        VBox result = new VBox(new Label("Recommended courses:"));
+        for(Course course : recommended){
+            Button delete = new Button("X");
+            HBox courseBox = new HBox(delete, new Label(course.getCourseName()));
+            result.getChildren().add(courseBox);
+
+            delete.setOnAction(event ->{
+                courseController.deleteRecommended(parts[0], course.getCourseName());
+                body.setCenter(viewCourse(itemString));
+            });
+        }
+        return result;
     }
 }
