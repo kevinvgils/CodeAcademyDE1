@@ -126,4 +126,33 @@ public class StudentController {
             System.out.println(e);
         }
     }
+
+    public ArrayList<String[]> getModules(String email, String CourseName){
+        ArrayList<String[]> modules = new ArrayList<>();
+        Connection connection = DBconnection.getConnection();
+        String query = "SELECT C.title, SC.progress FROM contentItem C "+
+        "INNER JOIN module M ON C.module_id = M.module_id "+
+        "INNER JOIN student_contentItem SC ON C.contentItem_id = SC.contentItem_id "+
+        "WHERE SC.email = ? AND M.courseName = ? "+
+        "ORDER BY M.orderNumber";
+        ResultSet resultSet;
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, email);
+            preparedStmt.setString(2, CourseName);
+            resultSet = preparedStmt.executeQuery();
+
+            while (resultSet.next()) {
+                String[] row = { resultSet.getString(1), Integer.toString(resultSet.getInt(2)) };
+                modules.add(row);
+            }
+
+            connection.close();
+            return modules;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 }

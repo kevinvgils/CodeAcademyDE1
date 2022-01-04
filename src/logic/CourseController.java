@@ -105,4 +105,46 @@ public class CourseController {
             System.out.println(e);
         }
     }
+
+    public ArrayList<Course> getRecommendedCourses(String courseName){
+        ArrayList<Course> courses = new ArrayList<>();
+        Connection connection = DBconnection.getConnection();
+        String query =  "SELECT * FROM course "+
+                        "WHERE courseName IN (SELECT R.recommendedCourseName FROM recommended_course R "+
+							"INNER JOIN course C on C.courseName = R.courseName "+
+							"WHERE C.courseName = ?)";
+        ResultSet resultSet;
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, courseName);
+            resultSet = preparedStmt.executeQuery();
+
+            while (resultSet.next()) {
+                Course course = new Course(resultSet.getString("courseName"), resultSet.getString("level"), resultSet.getString("subject"), resultSet.getString("introductionText"));
+                courses.add(course);
+            }
+            connection.close();
+            return courses;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println(query);
+            return null;
+        }
+    }
+
+    public void deleteRecommended(String courseName, String RecommendedName){
+        Connection connection = DBconnection.getConnection();
+        String query = "DELETE FROM recommended_course WHERE courseName = ? AND recommendedCourseName = ?";
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, courseName);
+            preparedStmt.setString(2, RecommendedName);
+            preparedStmt.execute();
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }
