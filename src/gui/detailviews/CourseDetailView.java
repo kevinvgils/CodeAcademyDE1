@@ -2,6 +2,7 @@ package gui.detailviews;
 
 import domain.course.Course;
 import gui.addviews.CourseAddView;
+import gui.addviews.RecommendedCourseAddView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,36 +31,33 @@ public class CourseDetailView {
         body.setCenter(viewCourse(itemString));
 
         // Footer
+        Button addButton = new Button("Add recommended course");
         Button deleteButton = new Button("Delete");
         Button editButton = new Button("Update");
         HBox buttons = new HBox(deleteButton, editButton);
         body.setBottom(buttons);
 
         // events
+
+        addButton.setOnAction(event -> {
+            new RecommendedCourseAddView(selectedCourse.getCourseName());
+        });
         deleteButton.setOnAction(event -> {
-            deleteItem();
+            if (selectedCourse != null) {
+                courseController.deleteCourse(selectedCourse.getCourseName());
+            }
             viewStage.close();
         });
         editButton.setOnAction(event -> {
-            updateItem();
+            if (selectedCourse != null) {
+                new CourseAddView(0, false, selectedCourse.getCourseName());
+            }
             viewStage.close();
         });
 
         Scene scene = new Scene(body);
         viewStage.setScene(scene);
         viewStage.show();
-    }
-
-    public void deleteItem() {
-        if (selectedCourse != null) {
-            courseController.deleteCourse(selectedCourse.getCourseName());
-        }
-    }
-
-    public void updateItem() {
-        if (selectedCourse != null) {
-            new CourseAddView(0, false, selectedCourse.getCourseName());
-        }
     }
 
     // Makes the addCourse form
