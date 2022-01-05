@@ -137,6 +137,21 @@ public class CourseController {
         }
     }
 
+    public void addRecommended(String courseName, String RecommendedName){
+        Connection connection = DBconnection.getConnection();
+        String query = "INSERT INTO recommended_course VALUES(?, ?)";
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, courseName);
+            preparedStmt.setString(2, RecommendedName);
+            preparedStmt.execute();
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public void deleteRecommended(String courseName, String RecommendedName) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM recommended_course WHERE courseName = ? AND recommendedCourseName = ?";
