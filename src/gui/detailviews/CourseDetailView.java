@@ -31,14 +31,17 @@ public class CourseDetailView {
         body.setCenter(viewCourse(itemString));
 
         // Footer
+        Button refreshButton = new Button("Refresh");
         Button addButton = new Button("Add recommended course");
         Button deleteButton = new Button("Delete");
         Button editButton = new Button("Update");
-        HBox buttons = new HBox(deleteButton, editButton);
+        HBox buttons = new HBox(refreshButton, addButton, deleteButton, editButton);
         body.setBottom(buttons);
 
         // events
-
+        refreshButton.setOnAction(event -> {
+            body.setCenter(viewCourse(itemString));
+        });
         addButton.setOnAction(event -> {
             new RecommendedCourseAddView(selectedCourse.getCourseName());
         });

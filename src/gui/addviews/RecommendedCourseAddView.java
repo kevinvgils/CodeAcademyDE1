@@ -1,6 +1,7 @@
 package gui.addviews;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import domain.course.Course;
 import javafx.scene.Scene;
@@ -36,13 +37,19 @@ public class RecommendedCourseAddView {
     //Makes the addCourse form
     public VBox addRecommendedCourse(String key){
         ChoiceBox courses = new ChoiceBox();
+        ArrayList<Course> courseArray = courseController.getAllCourses();
+        for (Course course : courseArray) {
+            courses.getItems().add(course.getCourseName());
+        }
 
         Button submitCourse = new Button("Add course");
 
         //add course
         submitCourse.setOnAction(event ->{
-            courseController.addRecommended(key, courses.getSelectionModel().getSelectedItem().toString());
-            createStage.close();
+            if (courses != null) {
+                courseController.addRecommended(key, courses.getSelectionModel().getSelectedItem().toString());
+                createStage.close();
+            }
         });
         
         return new VBox(courses, submitCourse);
