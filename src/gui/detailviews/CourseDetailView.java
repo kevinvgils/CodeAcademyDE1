@@ -21,21 +21,21 @@ public class CourseDetailView {
     public CourseDetailView(int type, String itemString) {
         Stage viewStage = new Stage();
 
-        //header
+        // header
         Label title = new Label();
         body.setTop(title);
 
-        //main
+        // main
         title.setText("Course");
         body.setCenter(viewCourse(itemString));
 
-        //Footer
+        // Footer
         Button deleteButton = new Button("Delete");
         Button editButton = new Button("Update");
         HBox buttons = new HBox(deleteButton, editButton);
         body.setBottom(buttons);
 
-        //events
+        // events
         deleteButton.setOnAction(event -> {
             deleteItem();
             viewStage.close();
@@ -50,14 +50,14 @@ public class CourseDetailView {
         viewStage.show();
     }
 
-    public void deleteItem(){
-        if(selectedCourse != null){
+    public void deleteItem() {
+        if (selectedCourse != null) {
             courseController.deleteCourse(selectedCourse.getCourseName());
         }
     }
 
-    public void updateItem(){
-        if(selectedCourse != null){
+    public void updateItem() {
+        if (selectedCourse != null) {
             new CourseAddView(0, false, selectedCourse.getCourseName());
         }
     }
@@ -68,27 +68,29 @@ public class CourseDetailView {
             String[] parts = itemString.split(" - ");
             selectedCourse = courseController.getCourse(parts[0]);
 
-            Label level = new Label("Level: "+ selectedCourse.getLevel());
-            Label subject = new Label("Subject: "+ selectedCourse.getSubject());
-            Label introductionText = new Label("Introduction text: "+ selectedCourse.getIntroductionText());
+            Label level = new Label("Level: " + selectedCourse.getLevel());
+            Label subject = new Label("Subject: " + selectedCourse.getSubject());
+            Label introductionText = new Label("Introduction text: " + selectedCourse.getIntroductionText());
+            Label passedCourse = new Label(
+                    "Passed course: " + courseController.getAmountPassedForCourse(selectedCourse.getCourseName()));
 
-            return new VBox(level, subject, introductionText, recommendedCoure(itemString));
+            return new VBox(level, subject, introductionText, passedCourse, recommendedCoure(itemString));
 
         } catch (Exception e) {
             return new VBox();
         }
     }
 
-    public VBox recommendedCoure(String itemString){
+    public VBox recommendedCoure(String itemString) {
         String[] parts = itemString.split(" - ");
         ArrayList<Course> recommended = courseController.getRecommendedCourses(parts[0]);
         VBox result = new VBox(new Label("Recommended courses:"));
-        for(Course course : recommended){
+        for (Course course : recommended) {
             Button delete = new Button("X");
             HBox courseBox = new HBox(delete, new Label(course.getCourseName()));
             result.getChildren().add(courseBox);
 
-            delete.setOnAction(event ->{
+            delete.setOnAction(event -> {
                 courseController.deleteRecommended(parts[0], course.getCourseName());
                 body.setCenter(viewCourse(itemString));
             });

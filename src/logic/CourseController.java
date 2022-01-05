@@ -24,7 +24,8 @@ public class CourseController {
             resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                Course course = new Course(resultSet.getString("courseName"), resultSet.getString("level"), resultSet.getString("subject"), resultSet.getString("introductionText"));
+                Course course = new Course(resultSet.getString("courseName"), resultSet.getString("level"),
+                        resultSet.getString("subject"), resultSet.getString("introductionText"));
                 courses.add(course);
             }
             connection.close();
@@ -46,7 +47,8 @@ public class CourseController {
             resultSet = preparedStmt.executeQuery();
 
             while (resultSet.next()) {
-                Course course = new Course(resultSet.getString("courseName"), resultSet.getString("level"), resultSet.getString("subject"), resultSet.getString("introductionText"));
+                Course course = new Course(resultSet.getString("courseName"), resultSet.getString("level"),
+                        resultSet.getString("subject"), resultSet.getString("introductionText"));
                 courses.add(course);
             }
             connection.close();
@@ -106,13 +108,13 @@ public class CourseController {
         }
     }
 
-    public ArrayList<Course> getRecommendedCourses(String courseName){
+    public ArrayList<Course> getRecommendedCourses(String courseName) {
         ArrayList<Course> courses = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
-        String query =  "SELECT * FROM course "+
-                        "WHERE courseName IN (SELECT R.recommendedCourseName FROM recommended_course R "+
-							"INNER JOIN course C on C.courseName = R.courseName "+
-							"WHERE C.courseName = ?)";
+        String query = "SELECT * FROM course " +
+                "WHERE courseName IN (SELECT R.recommendedCourseName FROM recommended_course R " +
+                "INNER JOIN course C on C.courseName = R.courseName " +
+                "WHERE C.courseName = ?)";
         ResultSet resultSet;
 
         try {
@@ -121,7 +123,8 @@ public class CourseController {
             resultSet = preparedStmt.executeQuery();
 
             while (resultSet.next()) {
-                Course course = new Course(resultSet.getString("courseName"), resultSet.getString("level"), resultSet.getString("subject"), resultSet.getString("introductionText"));
+                Course course = new Course(resultSet.getString("courseName"), resultSet.getString("level"),
+                        resultSet.getString("subject"), resultSet.getString("introductionText"));
                 courses.add(course);
             }
             connection.close();
@@ -133,7 +136,7 @@ public class CourseController {
         }
     }
 
-    public void deleteRecommended(String courseName, String RecommendedName){
+    public void deleteRecommended(String courseName, String RecommendedName) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM recommended_course WHERE courseName = ? AND recommendedCourseName = ?";
 
@@ -145,6 +148,27 @@ public class CourseController {
             connection.close();
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    public Integer getAmountPassedForCourse(String courseName) {
+        Connection connection = DBconnection.getConnection();
+        String query = "SELECT COUNT(*) FROM course AS c INNER JOIN enrollment AS e ON e.courseName = c.courseName WHERE c.courseName = ? AND e.certificate_id IS NOT NULL GROUP BY c.courseName";
+        ResultSet resultSet;
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, courseName);
+            resultSet = preparedStmt.executeQuery();
+            Integer passed = 0;
+            if (resultSet.next()) {
+                passed = resultSet.getInt(1);
+            }
+            connection.close();
+            return passed;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
         }
     }
 }
