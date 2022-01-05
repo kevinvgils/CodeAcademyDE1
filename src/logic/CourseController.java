@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import domain.course.Course;
 
@@ -187,5 +188,25 @@ public class CourseController {
         }
     }
 
+    public HashMap<String, String> getAvergareProgressPerModule(String courseName) {
+        Connection connection = DBconnection.getConnection();
+        String query = "SELECT c.courseName, ci.title, AVG(sc.progress) AS avg FROM course AS c INNER JOIN module AS e ON e.courseName = c.courseName INNER JOIN contentItem AS ci ON ci.module_id = e.module_id INNER JOIN student_contentItem as sc ON ci.contentItem_id = sc.contentItem_id GROUP BY c.courseName, ci.title HAVING c.courseName = ?";
+        ResultSet resultSet;
+        HashMap<String, String> list = new HashMap<>();
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, courseName);
+            resultSet = preparedStmt.executeQuery();
+            while (resultSet.next()) {
+                list.put(resultSet.getString("title"), resultSet.getString("avg"));
+            }
+            connection.close();
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
 }
