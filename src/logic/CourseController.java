@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import domain.course.Course;
 
@@ -136,6 +137,21 @@ public class CourseController {
         }
     }
 
+    public void addRecommended(String courseName, String RecommendedName) {
+        Connection connection = DBconnection.getConnection();
+        String query = "INSERT INTO recommended_course VALUES(?, ?)";
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, courseName);
+            preparedStmt.setString(2, RecommendedName);
+            preparedStmt.execute();
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public void deleteRecommended(String courseName, String RecommendedName) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM recommended_course WHERE courseName = ? AND recommendedCourseName = ?";
@@ -187,7 +203,7 @@ public class CourseController {
                 int[] row = { resultSet.getInt(1), resultSet.getInt(2) };
                 CertificatesPerGender.add(row);
             }
-            
+
             connection.close();
             return CertificatesPerGender;
         } catch (Exception e) {
@@ -200,12 +216,12 @@ public class CourseController {
         ArrayList<int[]> TotalEnrollments = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
         String query = "SELECT s.gender, COUNT (e.enrollment_id) AS TotalEnrollments " +
-        "FROM enrollment as e " +
-        "INNER JOIN student as s " +
-        "ON s.email = e.email " +
-        "WHERE e.enrollment_id IS NOT NULL " +
-        "AND e.courseName = ? " +
-        "GROUP by s.gender" ;
+                "FROM enrollment as e " +
+                "INNER JOIN student as s " +
+                "ON s.email = e.email " +
+                "WHERE e.enrollment_id IS NOT NULL " +
+                "AND e.courseName = ? " +
+                "GROUP by s.gender";
         ResultSet resultSet;
 
         try {
@@ -217,9 +233,30 @@ public class CourseController {
                 int[] row = { resultSet.getInt(1), resultSet.getInt(2) };
                 TotalEnrollments.add(row);
             }
-            
+
             connection.close();
             return TotalEnrollments;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public HashMap<String, String> getAvergareProgressPerModule(String courseName) {
+        Connection connection = DBconnection.getConnection();
+        String query = "SELECT c.courseName, ci.title, AVG(sc.progress) AS avg FROM course AS c INNER JOIN module AS e ON e.courseName = c.courseName INNER JOIN contentItem AS ci ON ci.module_id = e.module_id INNER JOIN student_contentItem as sc ON ci.contentItem_id = sc.contentItem_id GROUP BY c.courseName, ci.title HAVING c.courseName = ?";
+        ResultSet resultSet;
+        HashMap<String, String> list = new HashMap<>();
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, courseName);
+            resultSet = preparedStmt.executeQuery();
+            while (resultSet.next()) {
+                list.put(resultSet.getString("title"), resultSet.getString("avg"));
+            }
+            connection.close();
+            return list;
         } catch (Exception e) {
             System.out.println(e);
             return null;
@@ -230,12 +267,12 @@ public class CourseController {
         ArrayList<double[]> percents = new ArrayList<>();
         ArrayList<int[]> certificates = CertificatePerGender(courseName);
         ArrayList<int[]> enrollments = getAllEnrollments(courseName);
-        
-        if (certificates.size()!= 0 && enrollments.size()!= 0) {
+
+        if (certificates.size() != 0 && enrollments.size() != 0) {
             for (int i = 0; i < certificates.size(); i++) {
                 double[] percentRow = {
-                    (double) certificates.get(i)[0],
-                    (100.0 / enrollments.get(i)[1] * certificates.get(i)[1])
+                        (double) certificates.get(i)[0],
+                        (100.0 / enrollments.get(i)[1] * certificates.get(i)[1])
                 };
                 percents.add(percentRow);
             }
