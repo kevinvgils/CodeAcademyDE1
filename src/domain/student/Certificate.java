@@ -35,4 +35,12 @@ public class Certificate {
         this.staffName = staffName;
     }
 
+    public boolean vallidate(){
+        if(grade != null && staffName != null){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
