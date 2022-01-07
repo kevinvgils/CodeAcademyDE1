@@ -99,4 +99,17 @@ public class Student {
     public Integer getHouseNumber() {
         return houseNumber;
     }
+
+    public boolean vallidate(){
+        if(email != null && name != null && dateOfBirth != null && gender != null && country != null && houseNumber != null && zipCode != null && street != null && location != null){
+            if(email.matches("^[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]+$") && zipCode.matches("^[1-9]{1}[0-9]{3} [A-Z]{2}$")){
+                return true;
+            } else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
 }

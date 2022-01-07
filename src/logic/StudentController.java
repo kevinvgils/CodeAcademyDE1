@@ -13,6 +13,7 @@ public class StudentController {
 
     private DatabaseConnection DBconnection = new DatabaseConnection();
 
+    // gets all the students from the database
     public ArrayList<Student> getAllStudents() {
         ArrayList<Student> students = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -39,6 +40,7 @@ public class StudentController {
 
     }
 
+    //gets a specific student with the given email
     public Student getStudent(String email) {
         ArrayList<Student> students = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -65,22 +67,22 @@ public class StudentController {
         }
     }
 
-    public void addStudent(String email, String name, Date dateOfBirth, int gender, String zipCode,
-            int houseNumber, String street, String country, String location) {
+    //adds a student to the database
+    public void addStudent(Student student) {
         Connection connection = DBconnection.getConnection();
         String query = "INSERT INTO student VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, email);
-            preparedStmt.setString(2, name);
-            preparedStmt.setDate(3, dateOfBirth);
-            preparedStmt.setInt(4, gender);
-            preparedStmt.setString(5, zipCode);
-            preparedStmt.setInt(6, houseNumber);
-            preparedStmt.setString(7, street);
-            preparedStmt.setString(8, country);
-            preparedStmt.setString(9, location);
+            preparedStmt.setString(1, student.getEmail());
+            preparedStmt.setString(2, student.getName());
+            preparedStmt.setDate(3, student.getDateOfBirth());
+            preparedStmt.setInt(4, student.getGender());
+            preparedStmt.setString(5, student.getZipCode());
+            preparedStmt.setInt(6, student.getHouseNumber());
+            preparedStmt.setString(7, student.getStreet());
+            preparedStmt.setString(8, student.getCountry());
+            preparedStmt.setString(9, student.getLocation());
             preparedStmt.execute();
             connection.close();
         } catch (Exception e) {
@@ -88,6 +90,7 @@ public class StudentController {
         }
     }
 
+    //deletes a student from the database using the email address
     public void deleteStudent(String email) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM student WHERE email = ?";
@@ -102,6 +105,7 @@ public class StudentController {
         }
     }
 
+    //updates a student in the database using the given email
     public void updateStudent(Student student, String oldEmail) {
         Connection connection = DBconnection.getConnection();
         String query = "UPDATE student SET email = ?, name = ?, dateOfBirth = ?, gender = ?, zipCode = ?, houseNumber = ?, street = ?, country = ?, location = ? WHERE email = ?";
@@ -127,6 +131,8 @@ public class StudentController {
         }
     }
 
+    //gets all modules from the database belonging to the user and course
+    //it's in the studentController because it is used in the studentdetail gui
     public ArrayList<String[]> getModules(String email, String CourseName){
         ArrayList<String[]> modules = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
