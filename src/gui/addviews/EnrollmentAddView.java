@@ -45,7 +45,7 @@ public class EnrollmentAddView {
     // Makes the addStudent form
     public VBox addEnrollment(boolean addNew, int key) {
 
-        ChoiceBox courses = new ChoiceBox();
+        ChoiceBox<String> courses = new ChoiceBox<String>();
         ArrayList<Course> courseArray = courseController.getAllCourses();
 
         for (Course course : courseArray) {

@@ -33,7 +33,7 @@ public class CertificateAddView {
     public VBox addCertificate(int enrollmentId) {
         TextField staffName = new TextField();
         staffName.setPromptText("Staff name");
-        ChoiceBox grade = new ChoiceBox<>();
+        ChoiceBox<Integer> grade = new ChoiceBox<>();
         int i = 0;
         while (i <= 10) {
             grade.getItems().add(i);
