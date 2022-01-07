@@ -19,6 +19,7 @@ public class StudentAddView {
     private StudentController studentController;
     private Stage createStage = new Stage();
 
+    //creates the view
     public StudentAddView(int type, boolean addNew, String key) {
         studentController = new StudentController();
         BorderPane body = new BorderPane();
@@ -34,7 +35,7 @@ public class StudentAddView {
         createStage.show();
     }
 
-    //Makes the addStudent form
+    //returns the student add form
     public VBox addStudent(boolean addNew, String key){
         TextField email = new TextField();
         email.setPromptText("Email address");
