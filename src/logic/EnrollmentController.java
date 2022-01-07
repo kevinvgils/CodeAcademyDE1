@@ -3,14 +3,13 @@ package logic;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import domain.student.Enrollment;
 
-public class EnrollmentController { 
+public class EnrollmentController {
     private DatabaseConnection DBconnection = new DatabaseConnection();
 
     public ArrayList<Enrollment> getEnrollments(String email) {
@@ -28,7 +27,8 @@ public class EnrollmentController {
 
             while (resultSet.next()) {
                 Enrollment enrollment = new Enrollment(resultSet.getInt("enrollment_id"), resultSet.getString("email"),
-                        resultSet.getInt("certificate_id"), resultSet.getString("courseName"), resultSet.getDate("dateOfEnrollment"));
+                        resultSet.getInt("certificate_id"), resultSet.getString("courseName"),
+                        resultSet.getDate("dateOfEnrollment"));
                 enrollments.add(enrollment);
             }
             connection.close();
@@ -37,7 +37,33 @@ public class EnrollmentController {
             System.out.println(e);
             return null;
         }
-    } 
+    }
+
+    public ArrayList<String> getTop3Courses() {
+
+        Connection connection = DBconnection.getConnection();
+        ArrayList<String> enrollments = new ArrayList<>();
+
+        String query = "SELECT courseName, COUNT(*) AS Amount FROM enrollment as e WHERE e.enrollment_id IS NOT NULL GROUP BY courseName ORDER BY Amount DESC";
+        ResultSet resultSet;
+        Statement statement;
+        Integer i = 0;
+
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            while (resultSet.next() && i < 3) {
+                enrollments.add(resultSet.getString("courseName") + ": " + resultSet.getInt("Amount"));
+                i++;
+            }
+            connection.close();
+            return enrollments;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
     public Enrollment getEnrollment(int id) {
         ArrayList<Enrollment> enrollments = new ArrayList<>();
@@ -51,7 +77,8 @@ public class EnrollmentController {
 
             while (resultSet.next()) {
                 Enrollment enrollment = new Enrollment(resultSet.getInt("enrollment_id"), resultSet.getString("email"),
-                        resultSet.getInt("certificate_id"), resultSet.getString("courseName"), resultSet.getDate("dateOfEnrollment"));
+                        resultSet.getInt("certificate_id"), resultSet.getString("courseName"),
+                        resultSet.getDate("dateOfEnrollment"));
                 enrollments.add(enrollment);
             }
             connection.close();
@@ -62,7 +89,7 @@ public class EnrollmentController {
         }
     }
 
-    public void deleteEnrollment(Integer enrollmentId){
+    public void deleteEnrollment(Integer enrollmentId) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM enrollment WHERE enrollment_id = ?";
 
@@ -110,6 +137,3 @@ public class EnrollmentController {
         }
     }
 }
-
-
-    
