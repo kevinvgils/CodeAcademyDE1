@@ -3,6 +3,7 @@ package gui.addviews;
 import java.sql.Date;
 
 import domain.course.Course;
+import gui.ErrorView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -50,8 +51,14 @@ public class CourseAddView {
         //add course
         if(addNew){
             submitCourse.setOnAction(event ->{
-                courseController.addCourse(courseName.getText(), level.getText(), subject.getText(), introductionText.getText());
-                createStage.close();
+                Course newCourse = new Course(courseName.getText(), level.getText(), subject.getText(), introductionText.getText());
+
+                if(newCourse.vallidate()){
+                    courseController.addCourse(courseName.getText(), level.getText(), subject.getText(), introductionText.getText());
+                    createStage.close();
+                } else {
+                    new ErrorView("Make sure that the input is valid");
+                }
             });
 
         //Update course
@@ -65,8 +72,12 @@ public class CourseAddView {
             
             submitCourse.setOnAction(event ->{ 
                 Course updatedCourse = new Course(courseName.getText(), level.getText(), subject.getText(), introductionText.getText());
-                courseController.updateCourse(updatedCourse, selectedCourse.getCourseName());
-                createStage.close();
+                if(updatedCourse.vallidate()){
+                    courseController.updateCourse(updatedCourse, selectedCourse.getCourseName());
+                    createStage.close();
+                } else{
+                    new ErrorView("Make sure that the input is valid");
+                }
             });
         }
         return new VBox(courseName, level, subject, introductionText, submitCourse);
