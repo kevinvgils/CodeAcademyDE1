@@ -1,5 +1,6 @@
 package gui;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import domain.course.Course;
@@ -10,10 +11,13 @@ import gui.detailviews.CourseDetailView;
 import gui.detailviews.StudentDetailView;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -34,8 +38,10 @@ public class MasterView extends Application {
             return setStudent(studentController.getAllStudents());
         } else if(type == 1){
             return setCourse(courseController.getAllCourses());
-        } else{
-            return new VBox(); //WIP
+        } else if(type == 2){
+            return new VBox(allStats()); //WIP
+        } else {
+            return null;
         }
     }
 
@@ -61,6 +67,47 @@ public class MasterView extends Application {
         return allCourses;
     }
 
+    //Gives stats
+    public Accordion allStats() {
+        Accordion accordion = new Accordion();
+        TitledPane pane1 = new TitledPane("Percent certificate per gender" , getPercentCertificate());
+        TitledPane pane2 = new TitledPane(" "  , new Label("Show all cars available")); //TODO: Top 3 meest bekeken webcasts
+        TitledPane pane3 = new TitledPane(" ", new Label("Show all planes available")); //TODO: Top 3 meest bekeken cursussen
+
+        accordion.getPanes().addAll(pane1, pane2, pane3);
+        
+        return accordion;
+    }
+
+    public Accordion getPercentCertificate() {
+        Accordion PCAccordion = new Accordion();
+        ArrayList<Course> courses = courseController.getAllCourses();
+
+        for (Course c : courses) {
+            VBox innerWrap = new VBox();
+            ArrayList<double[]> percents = courseController.getPercentCertificate(c.getCourseName());
+            for (double[] perc : percents) {
+                String gender = "";
+                switch ((int) perc[0]) {
+                    case 0:
+                        gender = ("Male: ");
+                        break;
+                    case 1:
+                        gender = ("Female: ");
+                        break;
+                    case 2:
+                        gender = ("Other: ");
+                        break;
+                }
+                DecimalFormat df = new DecimalFormat("###.#");
+                innerWrap.getChildren().add(new Label(gender + df.format(perc[1]) + "%"));
+            }
+            PCAccordion.getPanes().add(new TitledPane(c.getCourseName(), innerWrap));
+        }
+
+        return PCAccordion; 
+    }
+
     @Override
     public void start(Stage arg0) throws Exception {
         
@@ -69,7 +116,8 @@ public class MasterView extends Application {
         //Header
         Button nav1 = new Button("Students");
         Button nav2 = new Button("Course");
-        HBox header = new HBox(nav1, nav2);
+        Button nav3 = new Button("Stats");
+        HBox header = new HBox(nav1, nav2, nav3);
         mainWrap.setTop(header);
 
         //Main
@@ -124,6 +172,11 @@ public class MasterView extends Application {
             type = 1;
             mainWrap.setCenter(alltypes());
         });
+        nav3.setOnAction(event -> {
+            type = 2;
+            mainWrap.setCenter(alltypes());
+        });
+
 
         removeButton.setOnAction(event ->{
             RadioButton selected = (RadioButton) items.getSelectedToggle();
