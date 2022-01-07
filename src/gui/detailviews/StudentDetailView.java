@@ -29,6 +29,7 @@ public class StudentDetailView {
     private BorderPane body = new BorderPane();
     private String itemString;
 
+    //creates a student view
     public StudentDetailView(int type, String itemString) {
         Stage viewStage = new Stage();
 
@@ -85,7 +86,7 @@ public class StudentDetailView {
         }
     }
 
-    // Makes the addStudent form
+    // puts all the student info in a VBOX to be returned
     public VBox viewStudent(String itemString) {
         try {
             this.itemString = itemString;
@@ -121,6 +122,7 @@ public class StudentDetailView {
 
     }
 
+    //gets all the enrollments the student made and puts them in an Accordion
     public Accordion getEnrollments(ArrayList<Enrollment> enrollments) {
 
         Accordion allEnrollmentsForStudent = new Accordion();
@@ -168,6 +170,7 @@ public class StudentDetailView {
         return allEnrollmentsForStudent;
     }
 
+    //puts all the modules belonging to a course and puts them in a VBox
     public VBox getContentItems(String email, String courseName){
 
         VBox content = new VBox();
