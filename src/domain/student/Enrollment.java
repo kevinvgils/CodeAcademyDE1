@@ -58,4 +58,12 @@ public class Enrollment {
         this.dateOfEnrollment = dateOfEnrollment;
     }
 
+    public boolean vallidate(){
+        if(email != null && courseName != null && dateOfEnrollment != null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

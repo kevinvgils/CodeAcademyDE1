@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import domain.course.Course;
 import domain.student.Enrollment;
 import domain.student.Student;
+import gui.ErrorView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -61,12 +62,16 @@ public class EnrollmentAddView {
         if (addNew) {
             submitEnrollment.setOnAction(event -> {
                 Date sqlDate = Date.valueOf(dateOfEnrollment.getValue());
-                enrollmentController.addEnrollment(selectedStudent.getEmail(),
-                        courses.getSelectionModel().getSelectedItem().toString(), sqlDate);
-                createStage.close();
+                Enrollment enrollment = new Enrollment(Integer.valueOf(0), selectedStudent.getEmail(), Integer.valueOf(0), courses.getSelectionModel().getSelectedItem().toString(), sqlDate);
+                if(enrollment.vallidate()){
+                    enrollmentController.addEnrollment(enrollment);
+                    createStage.close();
+                } else{
+                    new ErrorView("Make sure that the input is valid");
+                }
             });
 
-            // Update enrollment
+        // Update enrollment
         } else {
             Enrollment selectedEnrollment = enrollmentController.getEnrollment(key);
 

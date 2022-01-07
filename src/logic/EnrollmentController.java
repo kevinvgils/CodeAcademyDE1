@@ -103,15 +103,15 @@ public class EnrollmentController {
         }
     }
 
-    public void addEnrollment(String email, String courseName, Date dateOfEnrollment) {
+    public void addEnrollment(Enrollment enrollment) {
         Connection connection = DBconnection.getConnection();
         String query = "INSERT INTO enrollment(email, courseName, dateOfEnrollment) VALUES(?, ?, ?)";
 
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, email);
-            preparedStmt.setString(2, courseName);
-            preparedStmt.setDate(3, dateOfEnrollment);
+            preparedStmt.setString(1, enrollment.getEmail());
+            preparedStmt.setString(2, enrollment.getCourseName());
+            preparedStmt.setDate(3, enrollment.getDateOfEnrollment());
             preparedStmt.execute();
             connection.close();
         } catch (Exception e) {
