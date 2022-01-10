@@ -37,7 +37,7 @@ public class PostalCodeTests {
     @Test
     public void nullPostalCode(){
         //Arrange
-        Student student = new Student("loremgmail.com", null, null, null, null, null, null, null, null);
+        Student student = new Student("lorem@gmail.com", null, null, null, null, null, null, null, null);
 
         //Act
         boolean result = student.vallidate();
@@ -49,7 +49,7 @@ public class PostalCodeTests {
     @Test
     public void validPostalCode(){
         //Arrange
-        Student student = new Student("loremgmail.com", null, null, null, "1000 KK", null, null, null, null);
+        Student student = new Student("lorem@gmail.com", null, null, null, "1000 KK", null, null, null, null);
 
         //Act
         boolean result = student.vallidate();
@@ -61,7 +61,7 @@ public class PostalCodeTests {
     @Test
     public void invalidPostalCode(){
         //Arrange
-        Student student = new Student("loremgmail.com", null, null, null, "00000k", null, null, null, null);
+        Student student = new Student("lorem@gmail.com", null, null, null, "00000k", null, null, null, null);
 
         //Act
         boolean result = student.vallidate();
