@@ -12,6 +12,7 @@ import domain.student.Enrollment;
 public class EnrollmentController {
     private DatabaseConnection DBconnection = new DatabaseConnection();
 
+    // Collects all enrollments from the database
     public ArrayList<Enrollment> getEnrollments(String email) {
 
         Connection connection = DBconnection.getConnection();
@@ -39,6 +40,7 @@ public class EnrollmentController {
         }
     }
 
+    // Get the top 3 courses from the database
     public ArrayList<String> getTop3Courses() {
 
         Connection connection = DBconnection.getConnection();
@@ -65,6 +67,7 @@ public class EnrollmentController {
         }
     }
 
+    // Selects a specific enrollment
     public Enrollment getEnrollment(int id) {
         ArrayList<Enrollment> enrollments = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -89,6 +92,7 @@ public class EnrollmentController {
         }
     }
 
+    // Deletes an enrollment from the database
     public void deleteEnrollment(Integer enrollmentId) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM enrollment WHERE enrollment_id = ?";
@@ -103,7 +107,8 @@ public class EnrollmentController {
         }
     }
 
-    public void addEnrollment(Enrollment enrollment) {
+    // Adds an enrollment to the database
+    public void addEnrollment(String email, String courseName, Date dateOfEnrollment) {
         Connection connection = DBconnection.getConnection();
         String query = "INSERT INTO enrollment(email, courseName, dateOfEnrollment) VALUES(?, ?, ?)";
 
@@ -119,6 +124,7 @@ public class EnrollmentController {
         }
     }
 
+    // Updates an enrollment
     public void updateEnrollment(Enrollment enrollment, int oldEnrollmentId) {
         Connection connection = DBconnection.getConnection();
         String query = "UPDATE enrollment SET courseName = ?, dateOfEnrollment = ? WHERE enrollment_id = ?";
