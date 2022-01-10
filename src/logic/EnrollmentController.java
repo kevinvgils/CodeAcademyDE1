@@ -2,7 +2,6 @@ package logic;
 
 import java.sql.Statement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -108,7 +107,7 @@ public class EnrollmentController {
     }
 
     // Adds an enrollment to the database
-    public void addEnrollment(String email, String courseName, Date dateOfEnrollment) {
+    public void addEnrollment(Enrollment enrollment) {
         Connection connection = DBconnection.getConnection();
         String query = "INSERT INTO enrollment(email, courseName, dateOfEnrollment) VALUES(?, ?, ?)";
 

@@ -29,7 +29,7 @@ public class StudentDetailView {
     private BorderPane body = new BorderPane();
     private String itemString;
 
-    //creates a student view
+    // creates a student view
     public StudentDetailView(int type, String itemString) {
         Stage viewStage = new Stage();
 
@@ -109,7 +109,8 @@ public class StudentDetailView {
                     break;
 
             }
-            Label adress = new Label("Adress: " + selectedStudent.getZipCode() + " " + selectedStudent.getStreet() + " " + selectedStudent.getHouseNumber());
+            Label adress = new Label("Adress: " + selectedStudent.getZipCode() + " " + selectedStudent.getStreet() + " "
+                    + selectedStudent.getHouseNumber());
             Label location = new Label("Location: " + selectedStudent.getLocation());
             Label country = new Label("Country: " + selectedStudent.getCountry());
 
@@ -122,14 +123,13 @@ public class StudentDetailView {
 
     }
 
-    //gets all the enrollments the student made and puts them in an Accordion
+    // gets all the enrollments the student made and puts them in an Accordion
     public Accordion getEnrollments(ArrayList<Enrollment> enrollments) {
 
         Accordion allEnrollmentsForStudent = new Accordion();
 
         for (Enrollment enrollment : enrollments) {
 
-            TitledPane enrollmentWrap = new TitledPane();
             VBox innerWrap = new VBox();
 
             Button update = new Button("update");
@@ -164,19 +164,20 @@ public class StudentDetailView {
             innerWrap.getChildren().add(buttonWrap);
             innerWrap.getChildren().add(getContentItems(enrollment.getEmail(), enrollment.getCourseName()));
 
-            String enrollmentLabel = certificateStatus + enrollment.getCourseName() + " - " + enrollment.getDateOfEnrollment();
+            String enrollmentLabel = certificateStatus + enrollment.getCourseName() + " - "
+                    + enrollment.getDateOfEnrollment();
             allEnrollmentsForStudent.getPanes().add(new TitledPane(enrollmentLabel, innerWrap));
         }
         return allEnrollmentsForStudent;
     }
 
-    //puts all the modules belonging to a course and puts them in a VBox
-    public VBox getContentItems(String email, String courseName){
+    // puts all the modules belonging to a course and puts them in a VBox
+    public VBox getContentItems(String email, String courseName) {
 
         VBox content = new VBox();
         ArrayList<String[]> modules = studentController.getModules(email, courseName);
 
-        for(String[] module : modules){
+        for (String[] module : modules) {
             content.getChildren().add(new Label(module[1] + "% - " + module[0]));
         }
 
