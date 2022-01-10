@@ -25,6 +25,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.StudentController;
+import logic.ContentItemController;
 import logic.CourseController;
 import logic.EnrollmentController;
 
@@ -32,6 +33,7 @@ public class MasterView extends Application {
     private StudentController studentController = new StudentController();
     private CourseController courseController = new CourseController();
     private EnrollmentController enrollmentController = new EnrollmentController();
+    private ContentItemController contentItemController = new ContentItemController();
     private int type = 0;
     private ToggleGroup items = new ToggleGroup();
 
@@ -75,8 +77,7 @@ public class MasterView extends Application {
         Accordion accordion = new Accordion();
         TitledPane pane1 = new TitledPane("Percent certificate per gender", getPercentCertificate());
         TitledPane pane2 = new TitledPane("Top 3 Courses", getTop3Courses());
-        TitledPane pane3 = new TitledPane(" ", new Label("Show all planes available")); // TODO: Top 3 meest bekeken
-                                                                                        // cursussen
+        TitledPane pane3 = new TitledPane("Top 3 Webcasts", getTop3Webcasts());
 
         accordion.getPanes().addAll(pane1, pane2, pane3);
 
@@ -116,6 +117,17 @@ public class MasterView extends Application {
     public ListView<String> getTop3Courses() {
         ArrayList<String> top3Courses = enrollmentController.getTop3Courses();
         ObservableList<String> modules = FXCollections.observableArrayList(top3Courses);
+        ListView<String> listView = new ListView<String>(modules);
+        listView.setMaxHeight(70);
+        listView.setMinHeight(70);
+
+        return listView;
+    }
+
+    // Gives Top 3 Webcasts in a listview
+    public ListView<String> getTop3Webcasts() {
+        ArrayList<String> top3Webcasts = contentItemController.getTop3Webcasts();
+        ObservableList<String> modules = FXCollections.observableArrayList(top3Webcasts);
         ListView<String> listView = new ListView<String>(modules);
         listView.setMaxHeight(70);
         listView.setMinHeight(70);
