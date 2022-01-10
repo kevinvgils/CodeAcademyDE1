@@ -100,11 +100,15 @@ public class Student {
         return houseNumber;
     }
 
-    public boolean vallidate() {
-        if (email.matches("^[a-zA-Z]+@[a-zA-Z]+[.]{1}[a-zA-Z]+$") && zipCode.matches("^[1-9]{1}[0-9]{3} [A-Z]{2}$")) {
-            return true;
-        } else {
-            return false;
+  public boolean vallidate(){
+        if(email != null && zipCode != null) {
+            if(email.matches("^[a-zA-Z]+@[a-zA-Z]+[.]{1}[a-zA-Z]+$") && zipCode.matches("^[1-9]{1}[0-9]{3} [A-Z]{2}$")){
+                return true;
+            } else{
+                return false;
+            }
+        } else{
+          return false;
         }
-    }
+  }
 }
