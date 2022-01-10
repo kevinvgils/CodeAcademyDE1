@@ -100,10 +100,10 @@ public class Student {
         return houseNumber;
     }
 
-    public boolean vallidate(){
-        if(email.matches("^[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]+$") && zipCode.matches("^[1-9]{1}[0-9]{3} [A-Z]{2}$")){
+    public boolean vallidate() {
+        if (email.matches("^[a-zA-Z]+@[a-zA-Z]+[.]{1}[a-zA-Z]+$") && zipCode.matches("^[1-9]{1}[0-9]{3} [A-Z]{2}$")) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
