@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import domain.student.Certificate;
+
 public class CertificateController {
 
     private DatabaseConnection DBconnection = new DatabaseConnection();
 
-    public void addCertificate(Integer enrollmentId, Integer grade, String staffName) {
+    public void addCertificate(Integer enrollmentId, Certificate certificate) {
         Connection connection = DBconnection.getConnection();
         String certificateQuery = "INSERT INTO certificate VALUES(?, ?)";
         String updateEnrollmentQuery = "UPDATE enrollment SET certificate_id = ? WHERE enrollment_id = ?";
@@ -16,8 +18,8 @@ public class CertificateController {
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(certificateQuery,
                     PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStmt.setInt(1, grade);
-            preparedStmt.setString(2, staffName);
+            preparedStmt.setInt(1, certificate.getGrade());
+            preparedStmt.setString(2, certificate.getStaffName());
             preparedStmt.executeUpdate();
             ResultSet rs = preparedStmt.getGeneratedKeys();
             rs.next();

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import domain.course.Course;
+import gui.ErrorView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -46,9 +47,11 @@ public class RecommendedCourseAddView {
 
         //add course
         submitCourse.setOnAction(event ->{
-            if (courses != null) {
+            if (courses.getSelectionModel().getSelectedItem() != null) {
                 courseController.addRecommended(key, courses.getSelectionModel().getSelectedItem().toString());
                 createStage.close();
+            } else {
+                new ErrorView("Make sure that the input is valid");
             }
         });
         
