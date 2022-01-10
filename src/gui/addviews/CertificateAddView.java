@@ -1,5 +1,7 @@
 package gui.addviews;
 
+import domain.student.Certificate;
+import gui.ErrorView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -43,10 +45,14 @@ public class CertificateAddView {
         Button submitCertificate = new Button("Give certificate");
 
         submitCertificate.setOnAction(event -> {
-            certificateController.addCertificate(enrollmentId,
-                    Integer.valueOf(grade.getSelectionModel().getSelectedItem().toString()),
-                    staffName.getText());
-            createStage.close();
+            Certificate certificate = new Certificate(Integer.valueOf(0), Integer.valueOf(grade.getSelectionModel().getSelectedItem().toString()), staffName.getText());
+
+            if(certificate.vallidate()){
+                certificateController.addCertificate(enrollmentId, certificate);
+                createStage.close();
+            } else{
+                new ErrorView("Make sure that the input is valid");
+            }
         });
         return new VBox(staffName, grade, submitCertificate);
     }

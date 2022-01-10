@@ -37,4 +37,12 @@ public class Course {
     public void setIntroductionText(String introductionText) {
         this.introductionText = introductionText;
     }
+
+    public boolean vallidate(){
+        if(courseName != null && level != null && subject != null && introductionText != null){
+            return true;
+        } else{
+            return false;
+        }
+    }
 }

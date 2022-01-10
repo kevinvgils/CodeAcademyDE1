@@ -3,6 +3,7 @@ package gui.addviews;
 import java.sql.Date;
 
 import domain.student.Student;
+import gui.ErrorView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -64,8 +65,13 @@ public class StudentAddView {
         if(addNew){
             submitStudent.setOnAction(event ->{
                 Date sqlDate = Date.valueOf(dateOfBirth.getValue());
-                studentController.addStudent(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(), location.getText());
-                createStage.close();
+                Student student = new Student(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(), location.getText());
+                if(student.vallidate()){
+                    studentController.addStudent(student);
+                    createStage.close();
+                } else{
+                    new ErrorView("Make sure that the input is valid");
+                }
             });
 
         //Update student
@@ -85,8 +91,12 @@ public class StudentAddView {
             submitStudent.setOnAction(event ->{ 
                 Date sqlDate = Date.valueOf(dateOfBirth.getValue());
                 Student updatedStudent = new Student(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(), location.getText());
-                studentController.updateStudent(updatedStudent, selectedStudent.getEmail());
-                createStage.close();
+                if(updatedStudent.vallidate()){
+                    studentController.updateStudent(updatedStudent, selectedStudent.getEmail());
+                    createStage.close();
+                } else{
+                    new ErrorView("Make sure that the input is valid");
+                }
             });
         }
         return new VBox(email, name, dateOfBirth, gender, zipCode, houseNumber, street, location, country, submitStudent);

@@ -114,9 +114,9 @@ public class EnrollmentController {
 
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, email);
-            preparedStmt.setString(2, courseName);
-            preparedStmt.setDate(3, dateOfEnrollment);
+            preparedStmt.setString(1, enrollment.getEmail());
+            preparedStmt.setString(2, enrollment.getCourseName());
+            preparedStmt.setDate(3, enrollment.getDateOfEnrollment());
             preparedStmt.execute();
             connection.close();
         } catch (Exception e) {
