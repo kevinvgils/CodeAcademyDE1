@@ -225,7 +225,7 @@ public class MasterView extends Application {
         mainWrap.setBottom(buttons);
 
         // Sets scene
-        Scene scene = new Scene(mainWrap, 225, 125);
+        Scene scene = new Scene(mainWrap, 420, 250);
         arg0.setScene(scene);
         arg0.show();
     }

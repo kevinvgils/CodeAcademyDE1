@@ -1,6 +1,5 @@
 package gui.addviews;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import domain.course.Course;
@@ -8,9 +7,7 @@ import gui.ErrorView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -35,8 +32,8 @@ public class RecommendedCourseAddView {
         createStage.show();
     }
 
-    //Makes the addCourse form
-    public VBox addRecommendedCourse(String key){
+    // Makes the addCourse form
+    public VBox addRecommendedCourse(String key) {
         ChoiceBox courses = new ChoiceBox();
         ArrayList<Course> courseArray = courseController.getAllCourses();
         for (Course course : courseArray) {
@@ -45,8 +42,8 @@ public class RecommendedCourseAddView {
 
         Button submitCourse = new Button("Add course");
 
-        //add course
-        submitCourse.setOnAction(event ->{
+        // add course
+        submitCourse.setOnAction(event -> {
             if (courses.getSelectionModel().getSelectedItem() != null) {
                 courseController.addRecommended(key, courses.getSelectionModel().getSelectedItem().toString());
                 createStage.close();
@@ -54,7 +51,7 @@ public class RecommendedCourseAddView {
                 new ErrorView("Make sure that the input is valid");
             }
         });
-        
+
         return new VBox(courses, submitCourse);
     }
 }

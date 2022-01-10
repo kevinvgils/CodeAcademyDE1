@@ -2,7 +2,6 @@ package logic;
 
 import java.sql.Statement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class StudentController {
 
     }
 
-    //gets a specific student with the given email
+    // gets a specific student with the given email
     public Student getStudent(String email) {
         ArrayList<Student> students = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -67,7 +66,7 @@ public class StudentController {
         }
     }
 
-    //adds a student to the database
+    // adds a student to the database
     public void addStudent(Student student) {
         Connection connection = DBconnection.getConnection();
         String query = "INSERT INTO student VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -90,7 +89,7 @@ public class StudentController {
         }
     }
 
-    //deletes a student from the database using the email address
+    // deletes a student from the database using the email address
     public void deleteStudent(String email) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM student WHERE email = ?";
@@ -105,7 +104,7 @@ public class StudentController {
         }
     }
 
-    //updates a student in the database using the given email
+    // updates a student in the database using the given email
     public void updateStudent(Student student, String oldEmail) {
         Connection connection = DBconnection.getConnection();
         String query = "UPDATE student SET email = ?, name = ?, dateOfBirth = ?, gender = ?, zipCode = ?, houseNumber = ?, street = ?, country = ?, location = ? WHERE email = ?";
@@ -131,16 +130,16 @@ public class StudentController {
         }
     }
 
-    //gets all modules from the database belonging to the user and course
-    //it's in the studentController because it is used in the studentdetail gui
-    public ArrayList<String[]> getModules(String email, String CourseName){
+    // gets all modules from the database belonging to the user and course
+    // it's in the studentController because it is used in the studentdetail gui
+    public ArrayList<String[]> getModules(String email, String CourseName) {
         ArrayList<String[]> modules = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
-        String query = "SELECT C.title, SC.progress FROM contentItem C "+
-        "INNER JOIN module M ON C.module_id = M.module_id "+
-        "INNER JOIN student_contentItem SC ON C.contentItem_id = SC.contentItem_id "+
-        "WHERE SC.email = ? AND M.courseName = ? "+
-        "ORDER BY M.orderNumber";
+        String query = "SELECT C.title, SC.progress FROM contentItem C " +
+                "INNER JOIN module M ON C.module_id = M.module_id " +
+                "INNER JOIN student_contentItem SC ON C.contentItem_id = SC.contentItem_id " +
+                "WHERE SC.email = ? AND M.courseName = ? " +
+                "ORDER BY M.orderNumber";
         ResultSet resultSet;
 
         try {
