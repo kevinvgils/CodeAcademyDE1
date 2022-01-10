@@ -6,7 +6,7 @@ public class ContentItem {
     }
 
     public boolean vallidate(int progress){
-        if(progress < 0 && progress > 100){
+        if(progress < 0 || progress > 100){
             return false;
         } else{
             return true;
