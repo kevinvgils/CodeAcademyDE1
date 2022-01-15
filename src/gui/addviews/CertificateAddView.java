@@ -32,6 +32,7 @@ public class CertificateAddView {
         createStage.show();
     }
 
+    // Creates certificate form and adds certificate to DB
     public VBox addCertificate(int enrollmentId) {
         TextField staffName = new TextField();
         staffName.setPromptText("Staff name");
@@ -45,12 +46,13 @@ public class CertificateAddView {
         Button submitCertificate = new Button("Give certificate");
 
         submitCertificate.setOnAction(event -> {
-            Certificate certificate = new Certificate(Integer.valueOf(0), Integer.valueOf(grade.getSelectionModel().getSelectedItem().toString()), staffName.getText());
+            Certificate certificate = new Certificate(Integer.valueOf(0),
+                    Integer.valueOf(grade.getSelectionModel().getSelectedItem().toString()), staffName.getText());
 
-            if(certificate.vallidate()){
+            if (certificate.vallidate()) {
                 certificateController.addCertificate(enrollmentId, certificate);
                 createStage.close();
-            } else{
+            } else {
                 new ErrorView("Make sure that the input is valid");
             }
         });

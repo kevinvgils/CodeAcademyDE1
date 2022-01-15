@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class ContentItemController {
     private DatabaseConnection DBconnection = new DatabaseConnection();
 
+    // Gets top 3 webcasts
     public ArrayList<String> getTop3Webcasts() {
 
         Connection connection = DBconnection.getConnection();

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DatabaseConnection {
+    // Creates database connection
     public Connection getConnection() {
         String dbConnection = "jdbc:sqlserver://aei-sql2.avans.nl:1443;databaseName=CodeCademyIpsum";
         String user = "ipsum";

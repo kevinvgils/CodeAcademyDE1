@@ -10,6 +10,8 @@ public class CertificateController {
 
     private DatabaseConnection DBconnection = new DatabaseConnection();
 
+    // Adds certificate to DB
+
     public void addCertificate(Integer enrollmentId, Certificate certificate) {
         Connection connection = DBconnection.getConnection();
         String certificateQuery = "INSERT INTO certificate VALUES(?, ?)";

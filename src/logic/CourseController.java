@@ -13,6 +13,7 @@ public class CourseController {
 
     private DatabaseConnection DBconnection = new DatabaseConnection();
 
+    // Gets all courses from DB and puts them in an arraylist
     public ArrayList<Course> getAllCourses() {
         ArrayList<Course> courses = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -36,6 +37,7 @@ public class CourseController {
         return courses;
     }
 
+    // Gets specified course from DB and gives back a Course object
     public Course getCourse(String courseName) {
         ArrayList<Course> courses = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -60,6 +62,7 @@ public class CourseController {
         }
     }
 
+    // Adds course to DB
     public void addCourse(String courseName, String level, String subject, String introductionText) {
         Connection connection = DBconnection.getConnection();
         String query = "INSERT INTO course VALUES(?, ?, ?, ?)";
@@ -77,6 +80,7 @@ public class CourseController {
         }
     }
 
+    // Deletes specified course from DB
     public void deleteCourse(String courseName) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM course WHERE courseName = ?";
@@ -91,6 +95,7 @@ public class CourseController {
         }
     }
 
+    // Updates specified course from DB
     public void updateCourse(Course course, String oldCourseName) {
         Connection connection = DBconnection.getConnection();
         String query = "UPDATE course SET courseName = ?, level = ?, subject = ?, introductionText = ? WHERE courseName = ?";
@@ -109,6 +114,7 @@ public class CourseController {
         }
     }
 
+    // Gets recommended courses from DB and puts them in an arraylist
     public ArrayList<Course> getRecommendedCourses(String courseName) {
         ArrayList<Course> courses = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -137,6 +143,7 @@ public class CourseController {
         }
     }
 
+    // Create recommended course for specified course and add to DB
     public void addRecommended(String courseName, String RecommendedName) {
         Connection connection = DBconnection.getConnection();
         String query = "INSERT INTO recommended_course VALUES(?, ?)";
@@ -152,6 +159,7 @@ public class CourseController {
         }
     }
 
+    // Deletes specified recommended course
     public void deleteRecommended(String courseName, String RecommendedName) {
         Connection connection = DBconnection.getConnection();
         String query = "DELETE FROM recommended_course WHERE courseName = ? AND recommendedCourseName = ?";
@@ -167,6 +175,7 @@ public class CourseController {
         }
     }
 
+    // Gets amount of students passed for course
     public Integer getAmountPassedForCourse(String courseName) {
         Connection connection = DBconnection.getConnection();
         String query = "SELECT COUNT(*) FROM course AS c INNER JOIN enrollment AS e ON e.courseName = c.courseName WHERE c.courseName = ? AND e.certificate_id IS NOT NULL GROUP BY c.courseName";
@@ -188,6 +197,7 @@ public class CourseController {
         }
     }
 
+    // Gets % of gender that has certificate for specified course
     public ArrayList<int[]> CertificatePerGender(String courseName) {
         ArrayList<int[]> CertificatesPerGender = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -212,6 +222,7 @@ public class CourseController {
         }
     }
 
+    // Gets all enrollments and puts them in a list
     public ArrayList<int[]> getAllEnrollments(String courseName) {
         ArrayList<int[]> TotalEnrollments = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
@@ -242,6 +253,7 @@ public class CourseController {
         }
     }
 
+    // Gets average progress per module for specified course
     public HashMap<String, String> getAvergareProgressPerModule(String courseName) {
         Connection connection = DBconnection.getConnection();
         String query = "SELECT c.courseName, ci.title, AVG(sc.progress) AS avg FROM course AS c INNER JOIN module AS e ON e.courseName = c.courseName INNER JOIN contentItem AS ci ON ci.module_id = e.module_id INNER JOIN student_contentItem as sc ON ci.contentItem_id = sc.contentItem_id GROUP BY c.courseName, ci.title HAVING c.courseName = ?";
@@ -263,6 +275,7 @@ public class CourseController {
         }
     }
 
+    // Gets % certificates for specified course
     public ArrayList<double[]> getPercentCertificate(String courseName) {
         ArrayList<double[]> percents = new ArrayList<>();
         ArrayList<int[]> certificates = CertificatePerGender(courseName);

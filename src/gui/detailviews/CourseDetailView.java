@@ -99,6 +99,7 @@ public class CourseDetailView {
         }
     }
 
+    // Shows recommendend courses
     public VBox recommendedCoure(String itemString) {
         String[] parts = itemString.split(" - ");
         ArrayList<Course> recommended = courseController.getRecommendedCourses(parts[0]);
