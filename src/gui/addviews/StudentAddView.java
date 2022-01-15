@@ -16,11 +16,11 @@ import javafx.stage.Stage;
 import logic.StudentController;
 
 public class StudentAddView {
-    
+
     private StudentController studentController;
     private Stage createStage = new Stage();
 
-    //creates the view
+    // creates the view
     public StudentAddView(int type, boolean addNew, String key) {
         studentController = new StudentController();
         BorderPane body = new BorderPane();
@@ -36,8 +36,8 @@ public class StudentAddView {
         createStage.show();
     }
 
-    //returns the student add form
-    public VBox addStudent(boolean addNew, String key){
+    // returns the student add form
+    public VBox addStudent(boolean addNew, String key) {
         TextField email = new TextField();
         email.setPromptText("Email address");
         TextField name = new TextField();
@@ -61,21 +61,24 @@ public class StudentAddView {
 
         Button submitStudent = new Button("Add student");
 
-        //add student
-        if(addNew){
-            submitStudent.setOnAction(event ->{
+        // adds student
+        if (addNew) {
+            submitStudent.setOnAction(event -> {
                 Date sqlDate = Date.valueOf(dateOfBirth.getValue());
-                Student student = new Student(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(), location.getText());
-                if(student.vallidate()){
+                Student student = new Student(email.getText(), name.getText(), sqlDate,
+                        gender.getSelectionModel().getSelectedIndex(), zipCode.getText(),
+                        Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(),
+                        location.getText());
+                if (student.vallidate()) {
                     studentController.addStudent(student);
                     createStage.close();
-                } else{
+                } else {
                     new ErrorView("Make sure that the input is valid");
                 }
             });
 
-        //Update student
-        } else{
+            // Update student
+        } else {
             Student selectedStudent = studentController.getStudent(key);
             email.setText(selectedStudent.getEmail());
             name.setText(selectedStudent.getName());
@@ -87,18 +90,22 @@ public class StudentAddView {
             location.setText(selectedStudent.getLocation());
             country.setText(selectedStudent.getCountry());
             submitStudent.setText("Update student");
-            
-            submitStudent.setOnAction(event ->{ 
+
+            submitStudent.setOnAction(event -> {
                 Date sqlDate = Date.valueOf(dateOfBirth.getValue());
-                Student updatedStudent = new Student(email.getText(), name.getText(), sqlDate, gender.getSelectionModel().getSelectedIndex(), zipCode.getText(), Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(), location.getText());
-                if(updatedStudent.vallidate()){
+                Student updatedStudent = new Student(email.getText(), name.getText(), sqlDate,
+                        gender.getSelectionModel().getSelectedIndex(), zipCode.getText(),
+                        Integer.parseInt(houseNumber.getText()), street.getText(), country.getText(),
+                        location.getText());
+                if (updatedStudent.vallidate()) {
                     studentController.updateStudent(updatedStudent, selectedStudent.getEmail());
                     createStage.close();
-                } else{
+                } else {
                     new ErrorView("Make sure that the input is valid");
                 }
             });
         }
-        return new VBox(email, name, dateOfBirth, gender, zipCode, houseNumber, street, location, country, submitStudent);
+        return new VBox(email, name, dateOfBirth, gender, zipCode, houseNumber, street, location, country,
+                submitStudent);
     }
 }
